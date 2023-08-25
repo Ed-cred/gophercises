@@ -10,10 +10,10 @@ import (
 )
 
 func main() {
-	file := flag.String("file", "problems.csv", "Choose CSV file to read")
-	countdown := flag.Int("time", 30, "Number of seconds available to take the quiz in")
+	csvFile := flag.String("file", "problems.csv", "Choose CSV file(format `question,answer`) to read")
+	timer := flag.Int("time", 30, "Number of seconds available to take the quiz in")
 	flag.Parse()
-	openedFile, err := os.Open(*file)
+	openedFile, err := os.Open(*csvFile)
 	if err != nil {
 		log.Fatal("can't open file: ", err)
 	}
@@ -25,7 +25,7 @@ func main() {
 	}
 	timerExpire := make(chan bool)
 	go func() {
-		time.Sleep(time.Duration(*countdown) * time.Second)
+		time.Sleep(time.Duration(*timer) * time.Second)
 		timerExpire <- true
 	}()
 	var correctAns int
